@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Symulator napierdalania / Dawid Jasper</title>
+    <style>
+        #container {
+            display: flex;
+        }
+
+        .image {
+            cursor: pointer;
+            user-drag: none;
+            user-select: none;
+            transition: margin-left 0.5s;
+        }
+
+        #image2 {
+            margin-left: 0;
+        }
+
+        #image2.clicked {
+            margin-left: -330px;
+        }
+
+        #counter {
+            font-size: 48px;
+            font-family: 'Impact', sans-serif;
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #image3 {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Style dla popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f0f0f0;
+            padding: 20px;
+            z-index: 999;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img class="image" id="image1" src="obrazek1.jpg" alt="Obrazek 1">
+        <img class="image" id="image2" src="obrazek2.png" alt="Obrazek 2">
+    </div>
+
+    <p id="counter">Ilość hitów: 0</p>
+
+    <img id="image3" src="obrazek3.jpg" alt="Obrazek 3">
+
+    <audio id="audio1" src="audio1.mp3"></audio>
+    <audio id="audio2" src="audio2.mp3"></audio>
+
+    <!-- Dodaj audio bg.mp3 i ustaw atrybut loop na true, aby zapętlić dźwięk -->
+    <audio id="bgAudio" src="bg.mp3" loop></audio>
+
+    <button id="infoButton">Ważna informacja</button>
+
+    <!-- Popup -->
+    <div id="infoPopup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" id="closePopup">&times;</span>
+            <h1>Ważna Informacja</h1>
+            <p>Cześć, witamy na naszej stronie!</p>
+            <p>Chcielibyśmy jasno wyjaśnić, że ta strona ma charakter wyłącznie humorystyczny i satyryczny. Wszystkie prezentowane na niej treści są całkowicie fikcyjne i nie promują żadnych szkodliwych działań, w tym przemocy wobec zwierząt czy jakichkolwiek form przemocy.</p>
+            <p>Naszym celem jest dostarczenie rozrywki i uśmiechu, niezależnie od tego, czy jesteś fanem absurdalnego humoru czy po prostu chcesz odprężyć się na chwilę od codziennych trosk.</p>
+            <p>Wierzymy w wartość humoru i satyry jako narzędzi, które mogą pomóc nam spojrzeć na świat z innej perspektywy i pokazać, że nie zawsze musimy brać życie zbyt poważnie.</p>
+            <p>Zachęcamy do postrzegania naszej strony jako miejsca rozrywki i dystansowania się od jej treści. Dziękujemy za odwiedzenie naszej strony i życzymy miłego pobytu!</p>
+            <p style="font-style: italic;">Z wyrazami sympatii,</p>
+            <p>T Guy</p>
+        </div>
+    </div>
+
+    <script>
+        const image2 = document.getElementById('image2');
+        const audio1 = document.getElementById('audio1');
+        const audio2 = document.getElementById('audio2');
+        const bgAudio = document.getElementById('bgAudio');
+        const counter = document.getElementById('counter');
+        const image3 = document.getElementById('image3');
+        const infoButton = document.getElementById('infoButton');
+        const infoPopup = document.getElementById('infoPopup');
+        const closePopup = document.getElementById('closePopup');
+        let clickCount = 0;
+
+        image2.addEventListener('click', () => {
+            if (!image2.classList.contains('clicked')) {
+                image2.classList.add('clicked');
+                clickCount++;
+                counter.textContent = `Ilość hitów: ${clickCount}`;
+                counter.style.color = getRandomColor();
+
+                // Odtwarzaj bg.mp3
+                bgAudio.play();
+
+                if (Math.random() < 0.5) {
+                    audio1.play();
+                } else {
+                    audio2.play();
+                }
+
+                setTimeout(() => {
+                    image2.classList.remove('clicked');
+                }, 200);
+
+                if (clickCount === 69) {
+                    image3.style.display = 'block';
+                    setTimeout(() => {
+                        image3.style.display = 'none';
+                    }, 2000);
+                }
+            }
+        });
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // Obsługa przycisku "Ważna informacja" i okienka popup
+        infoButton.addEventListener('click', () => {
+            infoPopup.style.display = 'block';
+        });
+
+        // Obsługa przycisku zamykania okienka popup
+        closePopup.addEventListener('click', () => {
+            infoPopup.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
